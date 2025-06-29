@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untuk Bunga & Syahril ❤️</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <style>
+        /* BASE STYLES */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(to right bottom, #fde6ee, #f0e6ff); /* Gradasi warna latar belakang */
+            min-height: 100vh;
+            display: flex; /* Memastikan body adalah flex container */
+            align-items: center; /* Memusatkan konten secara vertikal */
+            justify-content: center; /* Memusatkan konten secara horizontal */
+            padding: 20px;
+            overflow-x: hidden; /* Mencegah scroll horizontal */
+        }
+
+        /* MAIN CONTAINER (THE WHITE BOX) */
+        .container {
+            position: relative;
+            background-color: white;
+            padding: 3rem;
+            border-radius: 2rem;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+            width: 550px; /* Lebar default container */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.5s ease-in-out; 
+        }
+        
+        /* STATE FOR GALLERY PAGE: Expanded container */
+        .container.expanded {
+            max-width: 100vw; /* Lebar penuh viewport */
+            width: auto; /* Biarkan lebar otomatis */
+            padding: 0; /* Hapus padding */
+            border-radius: 0; /* Hapus border-radius */
+            box-shadow: none; /* Hapus shadow */
+            overflow: auto; /* Izinkan scroll di dalam container jika konten lebih besar */
+        }
+
+        /* FIRST PAGE: Lock screen */
+        #firstPage {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        .heart-lock-image {
+            /* Perubahan di sini: */
+            width: 100%; /* Jadikan lebar 100% dari parentnya */
+            max-width: 500px; /* Batasi lebar maksimum */
+            height: 0; /* Atur tinggi menjadi 0 */
+            padding-bottom: 100%; /* Buat rasio aspek 1:1 (tinggi sama dengan lebar) */
+            background-image: url(gembok2.jpg);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin-bottom: 2rem;
+            position: relative;
+            display: flex; /* Tetap flex untuk memusatkan konten relatif */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Ini tidak efektif dengan padding-bottom hack, tapi jaga saja */
+        }
+        .fancy-question-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2rem;
+            color: #d83d6a;
+            position: absolute;
+            top: 55%;
+            left: 50%; /* Ubah dari 49% ke 50% untuk presisi centering */
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+            z-index: 10;
+        }
+        .anniversary-inputs {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            position: absolute;
+            top: 70%;
+            left: 50%; /* Ubah dari 52% ke 50% untuk presisi centering */
+            transform: translate(-50%, -50%);
+            width: 70%;
+            max-width: 200px;
+            z-index: 10;
+        }
+        .anniversary-inputs input {
+            width: 45px;
+            height: 55px;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #d83d6a;
+            border: 2px solid #ff99cc;
+            border-radius: 0.5rem;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.2s ease-in-out;
+        }
+        .anniversary-inputs input:focus {
+            outline: none;
+            border-color: #d83d6a;
+            box-shadow: 0 0 0 3px rgba(216, 61, 106, 0.3);
+        }
+        .anniversary-inputs span {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #d83d6a;
+            align-self: center;
+            z-index: 10;
+        }
+
+        /* SECOND PAGE: Message section */
+        #secondPage {
+            display: none; /* Hidden by default */
+            width: 100%;
+            text-align: left;
+            padding-top: 1rem;
+            flex-direction: column;
+            align-items: center;
+        }
+        .love-message {
+            background-color: #fff0f5;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            color: #4a4a4a;
+        }
+        .love-message h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #d83d6a;
+            margin-bottom: 1rem;
+        }
+        .love-message p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        /* THIRD PAGE: Gallery section */
+        #thirdPage {
+            display: none; /* Hidden by default */
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0; /* Add padding here for better spacing */
+        }
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 columns with equal width */
+            gap: 20px;
+            max-width: 1200px; /* Maximum width for the gallery grid */
+            width: 100%; /* Ensure it takes full width of its parent (thirdPage) */
+            padding: 20px; /* Padding inside the gallery grid */
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            grid-auto-rows: minmax(auto, max-content); 
+        }
+        .gallery-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease-in-out;
+            display: flex;
+            flex-direction: column;
+        }
+        .gallery-card:hover {
+            transform: translateY(-5px);
+        }
+        .gallery-card img {
+            width: 100%;
+            aspect-ratio: 4/3; /* Common photo aspect ratio, adjust as needed */
+            object-fit: cover;
+            display: block;
+        }
+        .card-text {
+            padding: 15px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .card-text h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 1.2em;
+        }
+        .card-text p {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 1250px) {
+            .gallery-container {
+                grid-template-columns: repeat(3, 1fr); /* 3 columns for slightly smaller screens */
+                max-width: 900px;
+            }
+        }
+        @media (max-width: 992px) {
+            .gallery-container {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns for tablets */
+                max-width: 600px;
+            }
+            .container.expanded { /* Let it expand more for tablets */
+                max-width: 95vw !important;
+            }
+        }
+        @media (max-width: 576px) {
+            .container {
+                padding: 1.5rem; /* Kurangi padding untuk layar kecil */
+            }
+            .heart-lock-image {
+                /* Perbaikan untuk ponsel kecil */
+                padding-bottom: 120%; /* Sedikit lebih tinggi untuk tampilan vertikal yang lebih baik */
+                margin-bottom: 1rem;
+            }
+            .fancy-question-text {
+                font-size: 1.5rem; /* Kurangi ukuran font */
+                top: 50%; /* Sesuaikan posisi jika perlu */
+            }
+            .anniversary-inputs {
+                width: 85%; /* Sedikit lebih lebar untuk input */
+                max-width: 180px; /* Batasi agar tidak terlalu besar */
+                top: 65%; /* Sesuaikan posisi jika perlu */
+            }
+            .anniversary-inputs input {
+                width: 40px; /* Sedikit lebih kecil */
+                height: 50px; /* Sedikit lebih kecil */
+                font-size: 1.5rem; /* Kurangi ukuran font input */
+            }
+            .anniversary-inputs span {
+                font-size: 1.5rem; /* Kurangi ukuran font span */
+            }
+            .gallery-container {
+                grid-template-columns: 1fr; /* 1 column for mobile phones */
+                max-width: 300px; /* Still have a max-width for very small screens if desired */
+                padding: 10px; /* Reduce internal padding on mobile */
+            }
+            .container.expanded { /* Full width on small screens */
+                max-width: 100vw !important;
+                padding: 10px !important;
+            }
+            .love-message h2 {
+                font-size: 1.8rem; /* Kurangi ukuran font h2 */
+            }
+            .love-message p {
+                font-size: 1rem; /* Kurangi ukuran font paragraf */
+            }
+        }
+            
+        /* Custom notification message box */
+        .message-box {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #333;
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            text-align: center;
+            font-size: 1.1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .message-box.show {
+            display: block;
+            opacity: 1;
+        }
+
+        /* LOVE HEARTS STYLES */
+        .love-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Agar tidak mengganggu interaksi dengan elemen lain */
+            overflow: hidden; /* Pastikan hati tidak terlihat di luar container */
+            z-index: 9999; /* Pastikan hati berada di atas elemen lain */
+        }
+
+        .love-heart {
+            position: absolute;
+            background-color: #ff69b4; /* Warna pink hati */
+            transform: rotate(-45deg);
+            animation: fall linear infinite;
+            opacity: 0; /* Awalnya sembunyikan */
+        }
+
+        .love-heart:before,
+        .love-heart:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #ff69b4;
+            border-radius: 50%;
+        }
+
+        .love-heart:before {
+            top: -50%;
+            left: 0;
+        }
+
+        .love-heart:after {
+            top: 0;
+            left: 50%;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(-45deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(-45deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <audio id="background-music" loop>
+        <source src="saat-bahagia-ungu.mp3" type="audio/mpeg">
+        <source src="saat-bahagia-ungu.ogg" type="audio/ogg"> Your browser does not support the audio element.
+    </audio>
+    <div class="love-container"></div>
+
+    <div class="container">
+        <div id="firstPage">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+                <span class="text-rose-500">Gembok </span>Cinta Kita 
+            </h1>
+            <p class="text-gray-600 text-lg mb-8">
+                Guess What? it's our day, baby! And yup I've got a suprise with your name on it 😘
+            </p>
+
+            <div class="heart-lock-image" id="heartLockImage">
+                <div class="fancy-question-text">Tanggal jadian kita kapan?</div>
+
+                <div class="anniversary-inputs">
+                    <input type="number" id="dayInput1" maxlength="1" min="0" max="9" placeholder="D">
+                    <input type="number" id="dayInput2" maxlength="1" min="0" max="9" placeholder="D">
+                    <span>-</span>
+                    <input type="number" id="monthInput1" maxlength="1" min="0" max="9" placeholder="M">
+                    <input type="number" id="monthInput2" maxlength="1" min="0" max="9" placeholder="M">
+                </div>
+            </div>
+
+         
+        </div>
+
+        <div id="secondPage">
+            <div class="love-message">
+                <h2 class="text-center">Happy Anniversary, Ayangggg! ❤️</h2>
+                <p>
+                    Haiii Sayang ku Muhammad Syahril Adawi Sinaga, ini dari Tunangan mu yg paling cantik Bunga Cantika.
+                    ga kerasa banget loh ini kita udah 2 tahun '2 TAHUNNN'. Banyak banget yang udah kita lalui selama 2 tahun terakhir ini.
+                    hmmm unga bingung mau kasi kado apa karena kita ldr jadi unga kasi website ini deh buat kenang kenangan dan nanti bisa kita ceritakan ke anak anak kita nanti kalo mama nya jago ngoding anjayyyyy.
+                </p>
+                <p>
+                    Meskipun kita ldr unga pasti kasi kado yg spesial buat ayang, ga penting sejauh apa jarak kita yg penting itu mah effortnya aja.
+                    bayangkan unga ngerjain nya ini dari jam 9.30 dan ini jam 11 belum selesai hadehh.
+                    Tapi gapapa demi ayang unga rela begadanggg.
+                </p>
+                <p>
+                    Terimakasih ya sayang udah mau berjuang buat bunga, ayang kerja di negara orang demi masa depan unga makasih banyak.
+                    unga sayang begeteeee sama ayang jadi jangan la cemburu cemburu ga asikkkk kali lah kau ni.
+                    pasti ini pertama kali kan ayang dibuatin website sama cewe kannn, cewe mana cobak yg jago ngoding kek bunga jadi ayang harus besyukur ya bunga ni bosss cium dongg wkwk.
+                    udah ah segitu aja capek ngetik babay i love you 😘
+                </p>
+                <p class="text-right italic mt-4">Tanjungbalai, 07 juli 2025</p>
+                <p class="text-right italic font-semibold text-rose-400">Kesayangan mu Bunga Cantika</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-center items-center gap-4 mt-6 w-full">
+                <button id="goToGalleryButton" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+                    Lihat Galeri Kenangan
+                </button>
+                <button id="backToHomeButton" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+                    Back
+                </button>
+            </div>
+        </div>
+
+        <div id="thirdPage">
+            <div class="love-message">
+                <h2 class="text-center">Tentang Kita ❤️</h2>
+                <div class="gallery-container">
+                    <div class="gallery-card">
+                        <img src="foto1.jpg" alt="Foto Pertama">
+                        <div class="card-text">
+                            <p>Foto Pertama Kita, disini unga kek gembel ke irian jang.</p>
+                        </div>
+                    </div>
+                
+                    <div class="gallery-card">
+                        <img src="foto2.jpg" alt="Deskripsi Gambar 2">
+                        <div class="card-text">
+                            <p>Teks di sini menjelaskan gambar kedua. Jadikan informatif dan menarik.</p>
+                        </div>
+                    </div>
+                
+                    <div class="gallery-card">
+                        <img src="foto3.jpg" alt="Deskripsi Gambar 3">
+                        <div class="card-text">
+                            <p>ini waktu unga pertama kali keluar pake hopants tapi sekarang udah nggak dah tobat wkwk</p>
+                        </div>
+                    </div>
+                
+                    <div class="gallery-card">
+                        <img src="foto4.jpg" alt="Deskripsi Gambar 4">
+                        <div class="card-text">
+                            <p>Ini Pertama kali dalam seumur hidup unga dirayakan ulang tahun sama pacar xixi</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-card">
+                        <img src="foto5.jpg" alt="Deskripsi Gambar 5">
+                        <div class="card-text">
+                            <p>Ini pas kita waxing HAHAHA ngakak disini gondol bulu kaki ayang.</p>
+                        </div>
+                    </div>
+                
+                    <div class="gallery-card">
+                        <img src="foto6.jpg" alt="Deskripsi Gambar 6">
+                        <div class="card-text">
+                            <p>Ini malam 27 pertama kita, capek kali maen merocun tapi syeruuuuu.</p>
+                        </div>
+                    </div>
+                
+                    <div class="gallery-card">
+                        <img src="foto7.jpg" alt="Deskripsi Gambar 7">
+                        <div class="card-text">
+                            <p>Ini kita bukber sama ortu ayang, unga disini malu malu masih.</p>
+                        </div>
+                    </div>
+                
+                    <div class="gallery-card">
+                        <img src="foto8.jpg" alt="Deskripsi Gambar 8">
+                        <div class="card-text">
+                            <p>Ini waktu lebaran HAHAHA lucuan rambut ayang disini kek mangkok ditarok dikepala.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-card">
+                        <img src="foto9.jpg" alt="Deskripsi Gambar 9">
+                        <div class="card-text">
+                            <p>Ini waktu kita ke singapore land pertama kali, ayang cemen baru beberapa kali naik seluncuran dah capek huuuu.</p>
+                        </div>
+                    </div>
+                
+                    <div class="gallery-card">
+                        <img src="foto10.jpg" alt="Deskripsi Gambar 10">
+                        <div class="card-text">
+                            <p>dannnn ini kita pertama kali ke berastagiiii, syeruuu sekali kita jalan jalan sama keluarga unga, nanti kita kesana lagi ya.</p>
+                        </div>
+                    </div>
+                
+                    <div class="gallery-card">
+                        <img src="foto12.jpg" alt="Deskripsi Gambar 11">
+                        <div class="card-text">
+                            <p>Ini kita mandi mandi waktu camping, tengok itu yg dibatu ada penampakan hantu undutttt.</p>
+                        </div>
+                    </div>
+                
+                    <div class="gallery-card">
+                        <img src="foto13.jpg" alt="Deskripsi Gambar 12">
+                        <div class="card-text">
+                            <p>Camping pertama kita yeayyy seru abisss tapi sayangnya kita gak setenda, itu sih yang ga seru nya.</p>
+                        </div>
+                    </div>
+
+                    <div class="gallery-card">
+                        <img src="foto14.jpg" alt="Deskripsi Gambar 13">
+                        <div class="card-text">
+                            <p>Fotobooth pertama kita ini background ya jelek buat kulit kusam .</p>
+                        </div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="foto15.jpg" alt="Deskripsi Gambar 14">
+                        <div class="card-text">
+                            <p>Bunga pertama yg unga dapat, setelah hidup 18 tahun waktu itu unga baru dapat bunga yeayyyy.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="foto16.jpg" alt="Deskripsi Gambar 15">
+                        <div class="card-text">
+                            <p>Nahhh ini foto studio kita yg keduaaaaa dan dalam rangka merayakan ultah simanusia pink.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="foto17.jpg" alt="Deskripsi Gambar 16">
+                        <div class="card-text">
+                            <p>Ini waktu mamak unga ultah, suprisenya ntah becamno cmno wkwk.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="foto18.jpg" alt="Deskripsi Gambar 17">
+                        <div class="card-text">
+                            <p>Edisi foto gabut aja, karena ada bando si rara jadi dipakek ke ayang dan mirip lah kek sirara.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="foto19.jpg" alt="Deskripsi Gambar 18">
+                        <div class="card-text">
+                            <p>Kangen kalungnyaaaaa huhuuuuu.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="foto20.jpg" alt="Deskripsi Gambar 19">
+                        <div class="card-text">
+                            <p>Ini unga cantik begeteee gils gils.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="foto21.jpg" alt="Deskripsi Gambar 20">
+                        <div class="card-text">
+                            <p>Nahh ini ayang ganteng begeteee anjayyyy.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="foto22.jpg" alt="Deskripsi Gambar 21">
+                        <div class="card-text">
+                            <p>Ehh sampai juga di foto tunangan kita, Ini hari paling bahagia unga disepanjang unga hidup.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="foto23.jpg" alt="Deskripsi Gambar 22">
+                        <div class="card-text">
+                            <p>Ini foto terakhir kita sebelum ldr unga disini syedihhh banget.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="foto24.jpg" alt="Deskripsi Gambar 23">
+                        <div class="card-text">
+                            <p>Ini unga sompatkan bepoto waktu menangis karena sedih tahun ini anniversary tak sama ayang, ulang tahun unga juga tak sama ayang, ramadhan dan lebaran juga.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="foto25.jpg" alt="Deskripsi Gambar 24">
+                        <div class="card-text">
+                            <p>Nahh disini keknya udah sebulan tanpa ayang udah agak terbiasa tapi tetap sedih juga kadang kadang.</p>
+                        </div>
+                    </div>
+
+                </div>
+                <button id="backToMessageButton" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 mt-6 mb-4">
+                    Back
+                </button>
+            </div>
+        </div>
+            
+    <div id="messageBox" class="message-box"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // DATA PRIBADI ANDA (Silakan ganti ini)
+            const MY_NAME = "Bunga Cantika";
+            const PARTNER_NAME = "Muhammad Syahril Adawi Sinaga";
+            const ANNIVERSARY_DATE_RAW = "09-07-2023"; // Format DD-MM-YYYY (Digunakan untuk perhitungan durasi)
+            const CORRECT_ANNIVERSARY_INPUT = "0907"; // Menggunakan tanggal "09-07" (DDMM)
+
+            // DOM ELEMENTS
+            const container = document.querySelector('.container');
+            const firstPage = document.getElementById('firstPage');
+            const secondPage = document.getElementById('secondPage');
+            const thirdPage = document.getElementById('thirdPage');
+            const dayInput1 = document.getElementById('dayInput1');
+            const dayInput2 = document.getElementById('dayInput2');
+            const monthInput1 = document.getElementById('monthInput1');
+            const monthInput2 = document.getElementById('monthInput2');
+            const unlockButton = document.getElementById('unlockButton');
+            const goToGalleryButton = document.getElementById('goToGalleryButton');
+            const backToHomeButton = document.getElementById('backToHomeButton');
+            const backToMessageButton = document.getElementById('backToMessageButton');
+            const messageBox = document.getElementById('messageBox');
+            const anniversaryInputs = [dayInput1, dayInput2, monthInput1, monthInput2];
+            const backgroundMusic = document.getElementById('background-music'); // Ambil elemen audio untuk musik
+
+            // FUNCTIONS
+            function showMessage(message, duration = 3000) {
+                messageBox.textContent = message;
+                messageBox.classList.add('show');
+                setTimeout(() => {
+                    messageBox.classList.remove('show');
+                }, duration);
+            }
+
+            function moveToNext(currentInput, nextInputId) {
+                if (currentInput.value.length === currentInput.maxLength) {
+                    const nextInput = document.getElementById(nextInputId);
+                    if (nextInput) {
+                        nextInput.focus();
+                    } else {
+                        // Jika tidak ada input berikutnya, langsung cek anniversary (misal setelah input terakhir)
+                        checkAnniversary(); 
+                    }
+                }
+            }
+
+            function checkAnniversary() {
+                const enteredCombination = `${dayInput1.value}${dayInput2.value}${monthInput1.value}${monthInput2.value}`;
+
+                if (enteredCombination.length === CORRECT_ANNIVERSARY_INPUT.length) {
+                    if (enteredCombination === CORRECT_ANNIVERSARY_INPUT) {
+                        showMessage('Kunci terbuka! Suprise Time! ❤️', 2000);
+                        setTimeout(() => {
+                            firstPage.style.display = 'none';
+                            secondPage.style.display = 'flex';
+                            unlockButton.style.display = 'none'; 
+                            document.querySelector('.anniversary-inputs').style.display = 'none'; 
+                            document.querySelector('.fancy-question-text').style.display = 'none';
+
+                            // Coba putar musik di sini setelah interaksi berhasil
+                            if (backgroundMusic) {
+                                backgroundMusic.play().catch(error => {
+                                    console.log('Autoplay was prevented. User interaction needed.', error);
+                                });
+                            }
+                        }, 2000);
+                    } else {
+                        showMessage('Kannn, Ayang Lupa!', 3000);
+                        anniversaryInputs.forEach(input => input.value = '');
+                        dayInput1.focus();
+                    }
+                }
+            }
+
+            function goToGalleryPage() {
+                secondPage.style.display = 'none';
+                thirdPage.style.display = 'flex';
+                container.classList.add('expanded');
+            }
+
+            function backToMessagePage() {
+                thirdPage.style.display = 'none';
+                secondPage.style.display = 'flex';
+                container.classList.remove('expanded');
+            }
+
+            function goBackToLockPage() {
+                secondPage.style.display = 'none';
+                firstPage.style.display = 'flex';
+                unlockButton.style.display = 'block'; 
+                document.querySelector('.anniversary-inputs').style.display = 'flex'; 
+                document.querySelector('.fancy-question-text').style.display = 'block';
+                anniversaryInputs.forEach(input => input.value = '');
+                dayInput1.focus();
+                container.classList.remove('expanded');
+            }
+
+            // EVENT LISTENERS UNTUK NAVIGASI DAN LOGIKA KUNCI
+            unlockButton.addEventListener('click', checkAnniversary);
+            goToGalleryButton.addEventListener('click', goToGalleryPage);
+            backToHomeButton.addEventListener('click', goBackToLockPage);
+            backToMessageButton.addEventListener('click', backToMessagePage);
+
+            // Input handling for auto-tab and backspace
+            anniversaryInputs.forEach((input, index) => {
+                input.addEventListener('keydown', (event) => {
+                    if (event.key === 'Backspace' && input.value === '') {
+                        if (index > 0) {
+                            anniversaryInputs[index - 1].focus();
+                        }
+                    } else if (event.key === 'Enter') {
+                        checkAnniversary();
+                    }
+                });
+                input.addEventListener('input', () => {
+                    input.value = input.value.replace(/[^0-9]/g, '').slice(0, input.maxLength);
+                    // Panggil moveToNext di sini
+                    if (input.id === 'dayInput1') moveToNext(input, 'dayInput2');
+                    else if (input.id === 'dayInput2') moveToNext(input, 'monthInput1');
+                    else if (input.id === 'monthInput1') moveToNext(input, 'monthInput2');
+                    else if (input.id === 'monthInput2') checkAnniversary(); // Setelah input terakhir, langsung cek
+                });
+            });
+
+            // LOGIC FOR FALLING HEARTS
+            const loveContainer = document.querySelector('.love-container');
+
+            function createLoveHeart() {
+                const heart = document.createElement('div');
+                heart.classList.add('love-heart');
+
+                const size = Math.random() * 20 + 10; // Ukuran hati acak antara 10px dan 30px
+                heart.style.width = size + 'px';
+                heart.style.height = size + 'px';
+
+                heart.style.left = Math.random() * 100 + 'vw'; // Posisi horizontal acak
+                heart.style.animationDuration = Math.random() * 5 + 5 + 's'; // Durasi animasi acak antara 5s dan 10s
+                heart.style.animationDelay = Math.random() * 2 + 's'; // Delay animasi acak
+
+                loveContainer.appendChild(heart);
+
+                // Hapus hati setelah animasi selesai untuk menghindari penumpukan elemen
+                heart.addEventListener('animationend', () => {
+                    heart.remove();
+                });
+            }
+
+            // Buat hati setiap 300ms (Anda bisa menyesuaikan kecepatan ini)
+            setInterval(createLoveHeart, 300);
+        });
+    </script>
+</body>
+</html>
